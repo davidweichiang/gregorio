@@ -1399,7 +1399,17 @@ local function include_score(gabc_file, force_gabccompile, allow_deprecated)
   end
 
   -- Input the gtex file
-  tex.print(string.format([[\input %s\relax]], gtex_file))
+  local gtex = io.open(gtex_file, 'r')
+  if gtex == nil then
+    err("\n Unable to open %s", gtex_file)
+    return
+  end
+  local gtex_str = gtex:read('a')
+  gtex:close()
+  local score = gregoriotex.parse_gtex(gtex_str)
+
+  -- Write its contents to the input stream
+  tex.print(gregoriotex.format_gtex(score):explode('\n'))
 end
 
 local function direct_gabc(gabc, header, allow_deprecated)
@@ -1421,7 +1431,8 @@ local function direct_gabc(gabc, header, allow_deprecated)
         .."See the documentation of Gregorio or your TeX\n"
         .."distribution to automatize it.", cmd, tex.formatname, tex.jobname)
   else
-    tex.print(content:explode('\n'))
+    local score = gregoriotex.parse_gtex(content)
+    tex.print(gregoriotex.format_gtex(score):explode('\n'))
   end
   local glog = io.open(snippet_logname, 'a+')
   if glog == nil then
@@ -1931,3 +1942,5 @@ gregoriotex.fancyhdr_toggle_callbacks    = fancyhdr_toggle_callbacks
 dofile(kpse.find_file('gregoriotex-nabc.lua', 'lua'))
 dofile(kpse.find_file('gregoriotex-signs.lua', 'lua'))
 dofile(kpse.find_file('gregoriotex-symbols.lua', 'lua'))
+dofile(kpse.find_file('gregoriotex-read.lua', 'lua'))
+dofile(kpse.find_file('gregoriotex-write.lua', 'lua'))
