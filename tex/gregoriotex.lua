@@ -1409,7 +1409,8 @@ local function include_score(gabc_file, force_gabccompile, allow_deprecated)
   local score = gregoriotex.parse_gtex(gtex_str)
 
   -- Write its contents to the input stream
-  tex.print(gregoriotex.format_gtex(score):explode('\n'))
+  gtex_str = gregoriotex.format_gtex(score)
+  tex.print(catcode_at_letter, gtex_str:explode('\n'))
 end
 
 local function direct_gabc(gabc, header, allow_deprecated)
@@ -1432,7 +1433,8 @@ local function direct_gabc(gabc, header, allow_deprecated)
         .."distribution to automatize it.", cmd, tex.formatname, tex.jobname)
   else
     local score = gregoriotex.parse_gtex(content)
-    tex.print(gregoriotex.format_gtex(score):explode('\n'))
+    content = gregoriotex.format_gtex(score)
+    tex.print(catcode_at_letter, content:explode('\n'))
   end
   local glog = io.open(snippet_logname, 'a+')
   if glog == nil then

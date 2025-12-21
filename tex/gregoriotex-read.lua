@@ -71,7 +71,7 @@ local function parse_cs(str, i)
   end
 end
 
-local macros = {
+gregoriotex.macros = {
   GreAccentus = 'tt',
   GreAdHocSpaceEndOfElement = 'ttt',
   GreAdditionalLine = 'ttt',
@@ -247,14 +247,14 @@ local function parse_args(codes, str, i)
       if has_braces then
         j = i + 1
         if j <= #str and str:sub(j, j) == '}' then -- empty braces
-          flag, arg, j = true, nil, j+1
+          flag, arg, j = true, '', j+1
         else          
           flag, arg, j = parse_cs(str, j)
-        end
-        if j <= #str and str:sub(j, j) == '}' then
-          j = j + 1
-        else
-          flag = false
+          if j <= #str and str:sub(j, j) == '}' then
+            j = j + 1
+          else
+            flag = false
+          end
         end
       else
         flag, arg, j = parse_cs(str, i)
@@ -316,7 +316,7 @@ function parse_token(str, i)
     end
     
     -- Main case for any control sequence
-    local codes = macros[tok:sub(2)] -- remove backslash
+    local codes = gregoriotex.macros[tok:sub(2)] -- remove backslash
     if codes ~= nil then
       flag, sem.args, j = parse_args(codes, str, j)
       if not flag then
@@ -334,8 +334,8 @@ function parse_token(str, i)
     -- Special case: \GreScoreOpening may have additional arguments
     if tok == [[\GreScoreOpening]] then
       local cs = sem.args[4]
-      if cs ~= nil then
-        codes = macros[cs:sub(2)] -- remove backslash
+      if cs ~= '' then
+        codes = gregoriotex.macros[cs:sub(2)] -- remove backslash
         codes = codes:sub(2) -- remove first argument (first syllable text)
         flag, sem.extra_args, j = parse_args(codes, str, j)
         if not flag then return false end
@@ -385,7 +385,7 @@ local function parse_gtex(str)
     if i == str:len()+1 then
       return toks
     else
-      err(string.format('unexpected %s', str:sub(i, i)))
+      err(string.format('unexpected %s at end of score', str:sub(i)))
     end
   else
     err('parse failed')

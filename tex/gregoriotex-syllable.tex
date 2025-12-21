@@ -1562,7 +1562,7 @@
 % the new bar spacing algorithm treats no note syllables as BarSyllables, while the old algorithm treated them as regular syllables.  In order to allow for this variant, we define NoNoteSyllable which aliases to the appropriate function
 \let\GreNoNoteSyllable\GreBarSyllable%
 
-%% internal macro to set the first syllable text after all parts are known
+%% internal macro to set the first syllable text after all parts are known (DEPRECATED)
 %% #1 - First part of the syllable (before the vowel)
 %% #2 - Middle part of the syllable (the vowel)
 %% #3 - Last part of the syllable (after the vowel)
@@ -1594,7 +1594,7 @@
 }%
 \gresetinitiallines{1}% default to one-line initials
 
-%% sets the first syllable text
+%% sets the first syllable text (DEPRECATED)
 %% #1 - Initial
 %% #2 - First letter after the initial
 %% #3 - everything else in the syllable
@@ -1612,6 +1612,7 @@
   \fi %
 }%
 
+% DEPRECATED
 \def\GreSetNoFirstSyllableText{%
   \gre@noinitial %
   \gre@setfirstsyllabletext{}{}{}{}{}{}%
@@ -1626,7 +1627,7 @@
   \fi %
 }%
 
-%% opens a score
+%% opens a score (DEPRECATED)
 %% #1 - macros rendering the things after the initial but before the notes
 %% #2 - macros rendering the things after starting notes but before the syllable
 %% #3 - macros rendering the things before the initial
