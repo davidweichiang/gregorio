@@ -93,7 +93,7 @@ gregoriotex.macros = {
   GreClearSyllableText = '', 
   GreColored = 't',
   GreCustos = 'tt',
-  GreDagger = '',
+  GreDagger = 'e',
   GreDiscretionary = 'ttt',
   GreDivisioFinalis = 'tt',
   GreDivisioMaior = 'tt',
@@ -136,7 +136,7 @@ gregoriotex.macros = {
   GreHEpisemaBridge = 'tttttt',
   GreHeader = 'tt',
   GreHighChoralSign = 'ttt',
-  GreHyph = '',
+  GreHyph = 'e',
   GreInDivisioFinalis = 'tt',
   GreInDivisioMaior = 'tt',
   GreInDivisioMaiorDotted = 'tt',
@@ -202,7 +202,7 @@ gregoriotex.macros = {
   GreSlur = 'tttttt',
   GreSmallCaps = 't',
   GreSpecial = 't',
-  GreStar = '',
+  GreStar = 'e',
   GreSupposeHighLedgerLine = '',
   GreSupposeLowLedgerLine = '',
   GreSuppressEolCustos = '',
@@ -229,6 +229,11 @@ gregoriotex.macros = {
   vbox = 't',
   vtop = 't',
   endinput = '',
+  textbackslash = 'e',
+  ['&'] = 'e',
+  ['#'] = 'e',
+  ['_'] = 'e',
+  textbf = 't', -- needed to make a test pass
 }
 
 local parse_token, parse_tokens
@@ -258,6 +263,15 @@ local function parse_args(codes, str, i)
         end
       else
         flag, arg, j = parse_cs(str, i)
+      end
+    elseif code == 'e' then
+      -- Match either {} or nothing. Return no arguments.
+      if has_braces and i+1 <= #str and str:sub(i+1, i+1) == '}' then
+        return true, {}, i+2
+      elseif not has_braces then
+        return true, {}, i
+      else
+        flag = false
       end
     end
     if flag then
@@ -362,7 +376,12 @@ function parse_token(str, i)
   end
     
   -- An ordinary character.
-  return true, str:sub(i, i), i+1
+  local c = str:match(utf8.charpattern, i)
+  if c then
+    return true, c, i+c:len()
+  else
+    err('invalid UTF-8 sequence')
+  end
 end
 
 -- Parse zero or more tokens or groups and return them as a list.

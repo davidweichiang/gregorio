@@ -48,7 +48,7 @@
 
 #define VOWEL_FILE "gregorio-vowels.dat"
 
-static bool read_vowel_rules(char *const lang) {
+static bool read_vowel_rules(char *const lang) { /* DEPRECATED */
     char *language = lang;
     rulefile_parse_status status = RFPS_NOT_FOUND;
     char **filenames, *filename, **p;
@@ -105,7 +105,7 @@ static bool read_vowel_rules(char *const lang) {
     return status == RFPS_FOUND;
 }
 
-void gregorio_set_centering_language(char *const language)
+void gregorio_set_centering_language(char *const language) /* DEPRECATED */
 {
     if (!read_vowel_rules(language)) {
         if (strcmp(language, "Latin") != 0 && strcmp(language, "latin") != 0 && strcmp(language, "la") != 0 && strcmp(language, "lat") != 0) {

@@ -518,6 +518,7 @@
 \newif\ifgre@nextforcedcentering%
 \gre@nextforcedcenteringfalse%
 
+% DEPRECATED
 \def\GreGABCForceCenters{%
   \ifgre@gabcforcecenters%
     \gre@forcedcenteringtrue%
@@ -526,6 +527,7 @@
   \fi%
 }%
 
+% DEPRECATED
 \def\GreGABCNextForceCenters{%
   \ifgre@gabcforcecenters%
     \gre@nextforcedcenteringtrue%
@@ -551,6 +553,7 @@
     ]%
 }%
 
+% DEPRECATED
 % #1 : the first letters of the syllable, that don't count for the alignment
 % #2 : the middle letters of the syllable, we must align in the middle of them
 % #3 : the end letters, they don't count
@@ -579,6 +582,7 @@
   \gre@forcedcenteringfalse%
 }%
 
+% DEPRECATED
 \def\GreSetNextSyllable#1#2#3#4#5{%
   \ifgre@nextforcedcentering%
     \gdef\gre@nextfirstsyllablepart{#1}%

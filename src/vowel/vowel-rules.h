@@ -20,6 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* This file is DEPRECATED */
+
 #define YYSTYPE char *
 #define YYSTYPE_IS_DECLARED 1
 

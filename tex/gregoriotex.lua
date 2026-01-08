@@ -1407,9 +1407,11 @@ local function include_score(gabc_file, force_gabccompile, allow_deprecated)
   local gtex_str = gtex:read('a')
   gtex:close()
   local score = gregoriotex.parse_gtex(gtex_str)
+  --gregoriotex.pprint(score)
 
   -- Write its contents to the input stream
   gtex_str = gregoriotex.format_gtex(score)
+  --print(gtex_str)
   tex.print(catcode_at_letter, gtex_str:explode('\n'))
 end
 
@@ -1433,7 +1435,9 @@ local function direct_gabc(gabc, header, allow_deprecated)
         .."distribution to automatize it.", cmd, tex.formatname, tex.jobname)
   else
     local score = gregoriotex.parse_gtex(content)
+    --gregoriotex.pprint(score)
     content = gregoriotex.format_gtex(score)
+    --print(content)
     tex.print(catcode_at_letter, content:explode('\n'))
   end
   local glog = io.open(snippet_logname, 'a+')
@@ -1904,6 +1908,21 @@ local function is_first_alteration(next)
   end
 end
 
+local function table_slice(t, i, j)
+  local out = {}
+  table.move(t, i, j, 1, out)
+  return out
+end
+
+local function table_extend(x, y)
+  table.move(y, 1, #y, #x+1, x)
+end
+
+local iftrue_token = token.create('iftrue')
+local function get_if(name)
+  return token.create('if'..name).mode == iftrue_token.mode
+end
+
 gregoriotex.number_to_letter             = number_to_letter
 gregoriotex.init                         = init
 gregoriotex.include_score                = include_score
@@ -1940,9 +1959,13 @@ gregoriotex.change_next_score_line_count = change_next_score_line_count
 gregoriotex.set_base_output_dir          = set_base_output_dir
 gregoriotex.is_first_alteration          = is_first_alteration
 gregoriotex.fancyhdr_toggle_callbacks    = fancyhdr_toggle_callbacks
+gregoriotex.table_slice                  = table_slice
+gregoriotex.table_extend                 = table_extend
+gregoriotex.get_if                       = get_if
 
 dofile(kpse.find_file('gregoriotex-nabc.lua', 'lua'))
-dofile(kpse.find_file('gregoriotex-signs.lua', 'lua'))
-dofile(kpse.find_file('gregoriotex-symbols.lua', 'lua'))
 dofile(kpse.find_file('gregoriotex-read.lua', 'lua'))
+dofile(kpse.find_file('gregoriotex-signs.lua', 'lua'))
+dofile(kpse.find_file('gregoriotex-syllable.lua', 'lua'))
+dofile(kpse.find_file('gregoriotex-symbols.lua', 'lua'))
 dofile(kpse.find_file('gregoriotex-write.lua', 'lua'))

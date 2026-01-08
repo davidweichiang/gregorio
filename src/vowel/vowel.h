@@ -20,6 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* This file is DEPRECATED */
+
 #ifndef _VOWEL_H
 #define _VOWEL_H
 

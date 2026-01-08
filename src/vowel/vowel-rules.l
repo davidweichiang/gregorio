@@ -21,6 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* This file is DEPRECATED */
+
 #include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
